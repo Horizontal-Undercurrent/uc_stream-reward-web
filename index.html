@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body{
+      height: 100vh;
+      background: rgb(157,249,255);
+      background: linear-gradient(100deg, rgba(157,249,255,1) 0%, rgba(10,109,254,1) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button{
+      background: none;
+      border: none;
+      width: 1.5rem;
+      height: 1.5rem; 
+      cursor: pointer;
+
+      &:active{
+        scale: .9;
+      }
+    }
+
+    img{
+      width: 100%;
+    }
+
+    div{
+      display: flex; 
+      align-items: center; 
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1 id="token">fgwegewgwegwegwefwefweg</h1>
+    <button id="coppy-token">
+      <img src="./assets/coppy.png" />
+    </button>
+  </div>
+
+  <script>
+    const token = document.getElementById('token')
+    const button = document.getElementById('coppy-token')
+
+    function updateToken(){
+      const href = location.href
+      const params = new URLSearchParams(href.slice(href.indexOf('#' )+ 1))
+      const oauth = params.get('access_token')
+      
+      token.innerHTML = oauth
+    }
+
+    async function coppyToken(){
+      const access = await navigator.permissions.query({name: 'clipboard-write'})
+
+      if(access.state !== 'granted') location.reload()
+
+      navigator.clipboard.writeText(token.innerHTML)
+    }
+
+    updateToken() 
+
+    button.onclick = coppyToken
+  </script>
+</body>
+</html>
+
